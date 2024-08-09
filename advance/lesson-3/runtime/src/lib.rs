@@ -100,7 +100,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
     //   `spec_version`, and `authoring_version` are the same between Wasm and native.
     // This value is set to 100 to notify Polkadot-JS App (https://polkadot.js.org/apps) to use
     //   the compatible custom types.
-    spec_version: 100,
+    spec_version: 101,
     impl_version: 1,
     apis: RUNTIME_API_VERSIONS,
     transaction_version: 1,
@@ -326,11 +326,33 @@ pub type SignedExtra = (
     pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
 );
 
+pub struct ExampleMigration<T: pallet_kitties::Config>(core::marker::PhantomData<T>);
+
+impl<T: pallet_kitties::Config> frame_support::traits::OnRuntimeUpgrade for ExampleMigration<T> {
+    fn on_runtime_upgrade() -> frame_support::weights::Weight {
+        log::info!("example migration");
+        pallet_kitties::NextKittyId::<T>::mutate(|kitty_id| *kitty_id = 0);
+        // Balances::<T>::transfer(Some(1), &2, 100).unwrap();
+        Weight::default()
+    }
+}
+
+pub struct ExampleMigration2<T: pallet_kitties::Config>(core::marker::PhantomData<T>);
+
+impl<T: pallet_kitties::Config> frame_support::traits::OnRuntimeUpgrade for ExampleMigration2<T> {
+    fn on_runtime_upgrade() -> frame_support::weights::Weight {
+        log::info!("example migration 2");
+        // pallet_kitties::Kitties::<T>::();
+        // Balances::<T>::transfer(Some(1), &2, 100).unwrap();
+        Weight::default()
+    }
+}
+
 /// All migrations of the runtime, aside from the ones declared in the pallets.
 ///
 /// This can be a tuple of types, each implementing `OnRuntimeUpgrade`.
 #[allow(unused_parens)]
-type Migrations = ();
+type Migrations = (ExampleMigration<Runtime>, ExampleMigration2<Runtime>);
 
 /// Unchecked extrinsic type as expected by this runtime.
 pub type UncheckedExtrinsic =
