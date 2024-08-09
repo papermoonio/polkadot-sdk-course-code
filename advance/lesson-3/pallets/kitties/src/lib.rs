@@ -30,7 +30,7 @@ mod impls;
 #[import_section(impls::impls)]
 #[import_section(genesis::genesis)]
 /// Set the pallet at dev mode for quick PoC.
-#[frame_support::pallet(dev_mode)]
+#[frame_support::pallet]
 pub mod pallet {
     use super::*;
     use frame_support::pallet_prelude::*;
@@ -40,7 +40,7 @@ pub mod pallet {
     use sp_std::prelude::*;
     use sp_weights::WeightMeter;
 
-    #[derive(Encode, Decode, Clone, Default, TypeInfo, Serialize, Deserialize)]
+    #[derive(Encode, Decode, Clone, Default, TypeInfo, Serialize, Deserialize, MaxEncodedLen)]
     pub struct Kitty(pub [u8; 16]);
 
     #[pallet::pallet]
@@ -50,12 +50,12 @@ pub mod pallet {
     pub type NextKittyId<T> = StorageValue<_, u32, ValueQuery>;
 
     #[pallet::storage]
-    pub type Kitties<T> = StorageMap<_, _, u32, Kitty>;
+    pub type Kitties<T> = StorageMap<_, Identity, u32, Kitty>;
 
-    #[pallet::storage]
-    pub type KittyOwner<T: Config> = StorageMap<_, _, u32, T::AccountId>;
+    // #[pallet::storage]
+    // pub type KittyOwner<T: Config> = StorageMap<_, _, u32, T::AccountId>;
 
-    // bid price for each kitty,
-    #[pallet::storage]
-    pub type KittiesBid<T: Config> = StorageMap<_, _, u32, Vec<(T::AccountId, u64)>>;
+    // // bid price for each kitty,
+    // #[pallet::storage]
+    // pub type KittiesBid<T: Config> = StorageMap<_, _, u32, Vec<(T::AccountId, u64)>>;
 }
