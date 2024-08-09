@@ -37,19 +37,19 @@ mod hooks {
             log::info!("Kitties offchain_worker at block {:?}", n);
         }
 
-        #[cfg(feature = "try-runtime")]
-        fn pre_upgrade() -> Result<Vec<u8>, sp_runtime::TryRuntimeError> {
-            unimplemented!()
-        }
+        // #[cfg(feature = "try-runtime")]
+        // fn pre_upgrade() -> Result<Vec<u8>, sp_runtime::TryRuntimeError> {
+        //     unimplemented!()
+        // }
 
-        #[cfg(feature = "try-runtime")]
-        fn post_upgrade(_state: Vec<u8>) -> Result<(), sp_runtime::TryRuntimeError> {
-            unimplemented!()
-        }
+        // #[cfg(feature = "try-runtime")]
+        // fn post_upgrade(_state: Vec<u8>) -> Result<(), sp_runtime::TryRuntimeError> {
+        //     unimplemented!()
+        // }
 
-        #[cfg(feature = "try-runtime")]
-        fn try_state(_n: BlockNumberFor<T>) -> Result<(), sp_runtime::TryRuntimeError> {
-            unimplemented!()
-        }
+        // #[cfg(feature = "try-runtime")]
+        // fn try_state(_n: BlockNumberFor<T>) -> Result<(), sp_runtime::TryRuntimeError> {
+        //     unimplemented!()
+        // }
     }
 }

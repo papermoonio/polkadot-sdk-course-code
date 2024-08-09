@@ -338,12 +338,14 @@ impl<T: pallet_kitties::Config> frame_support::traits::OnRuntimeUpgrade for Exam
 
     #[cfg(feature = "try-runtime")]
     fn pre_upgrade() -> Result<Vec<u8>, sp_runtime::TryRuntimeError> {
+        log::info!("example pre_upgrade");
         let kitty_id = pallet_kitties::NextKittyId::<T>::get();
         Ok(kitty_id.encode())
     }
 
     #[cfg(feature = "try-runtime")]
     fn post_upgrade(state: Vec<u8>) -> Result<(), sp_runtime::TryRuntimeError> {
+        log::info!("example post_upgrade");
         let kitty_id_before = u32::decode(&mut &state[..]).map_err(|_| "invalid state")?;
         let kitty_id_after = pallet_kitties::NextKittyId::<T>::get();
         ensure!(kitty_id_before == kitty_id_after, "invalid state");
@@ -365,7 +367,7 @@ impl<T: pallet_kitties::Config> frame_support::traits::OnRuntimeUpgrade for Exam
 /// This can be a tuple of types, each implementing `OnRuntimeUpgrade`.
 #[allow(unused_parens)]
 type Migrations = (ExampleMigration<Runtime>, ExampleMigration2<Runtime>);
-
+// type Migrations = ();
 /// Unchecked extrinsic type as expected by this runtime.
 pub type UncheckedExtrinsic =
     generic::UncheckedExtrinsic<Address, RuntimeCall, Signature, SignedExtra>;

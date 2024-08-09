@@ -39,4 +39,5 @@ end
  	OnIdle --> OnFinalize
  end
  ```
-  
+  ## try-runtime
+  try-runtime --runtime target/release/wbuild/solochain-template-runtime/solochain_template_runtime.wasm on-runtime-upgrade ws://127.0.0.1:9944
